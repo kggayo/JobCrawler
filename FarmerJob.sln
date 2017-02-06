@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmerJob.Crawler", "FarmerJob.Crawler\FarmerJob.Crawler.csproj", "{4748D60F-B7A2-49FF-B6A4-428ADCE3CE13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmerJob.Crawler.Console", "ConsoleApplication1\FarmerJob.Crawler.Console.csproj", "{A829FD16-7A58-4EFC-8510-40001FCCEC9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmerJob.Crawler.Console", "FarmerJob.Crawler.Console\FarmerJob.Crawler.Console.csproj", "{A829FD16-7A58-4EFC-8510-40001FCCEC9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
