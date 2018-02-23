@@ -79,11 +79,33 @@ namespace FarmerJob.Crawler
 
             if (string.IsNullOrEmpty(crawledPage.Content.Text))
                 result = string.Format("Page had no content {0}", crawledPage.Uri.AbsoluteUri);
-            log.Info(result);
-            var htmlAgilityPackDocument = crawledPage.HtmlDocument; //Html Agility Pack parser
-            
-            //var angleSharpHtmlDocument = crawledPage.AngleSharpHtmlDocument; //AngleSharp parser
 
+            log.Info("crawler_ProcessPageCrawlCompleted");
+            log.Info(result);
+
+            if (!string.IsNullOrEmpty(crawledPage.Content.Text) && crawledPage.Uri.AbsoluteUri.Contains("/jobs/view/"))
+            {
+                var doc = crawledPage.HtmlDocument; //Html Agility Pack parser
+
+                //var angleSharpHtmlDocument = crawledPage.AngleSharpHtmlDocument; //AngleSharp parser
+
+                try
+                {
+                    string positionTitle = doc.DocumentNode.SelectSingleNode("//h1[@class='search_highlight']").InnerText.Trim();
+                    string location = doc.DocumentNode.SelectSingleNode("//div[@class='location search_highlight']").InnerText.Trim();
+                    string companyName = doc.DocumentNode.SelectSingleNode("//span[@class='search_highlight']//a").InnerText.Trim();
+                    string postedDate = doc.DocumentNode.SelectSingleNode("//div[@id='contentHeading']//div[@class='meta']").InnerText.Trim().Split(new char[] { '\n' })[0].Replace("Posted on : ", "");
+                    string jobDescription = doc.DocumentNode.SelectSingleNode("//meta[@name='description']").Attributes["content"].Value;
+                    string experience = doc.DocumentNode.SelectSingleNode("//div[@class='field_experience_required']/div[@class='job-level']/span").InnerText.Trim();
+
+                    log.Info(string.Format("Position: {0};Location: {1}; Company Name: {2}; Posted Date: {3}; Job Desc: {4}; Exp: {5}", positionTitle, location,
+                        companyName, postedDate, jobDescription, experience));
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.Message);
+                }
+            }
         }
 
         private void crawler_ProcessPageCrawlStarting(object sender, PageCrawlStartingArgs e)

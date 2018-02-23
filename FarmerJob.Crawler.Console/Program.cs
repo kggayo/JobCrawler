@@ -11,16 +11,15 @@ namespace FarmerJob.Crawler.Console
     {
         static void Main(string[] args)
         {
+            //This will crawl actual nimo
             XmlConfigurator.Configure();
             JobCrawler crawler = new JobCrawler();
             crawler.Crawl(@"https://cebu.mynimo.com/jobs/browse/it");
-            //crawler.Crawl(@"https://cebu.mynimo.com/jobs/browse/programming");
 
+
+            //test parse job page
             //HtmlDocument doc = new HtmlDocument();
             //doc.Load(@"html\index.html");
-
-            //string sourceUrl = "https://cebu.mynimo.com/jobs/browse/it";
-            //string jobUrl = "test.html";
 
             //string positionTitle = doc.DocumentNode.SelectSingleNode("//h1[@class='search_highlight']").InnerText.Trim();
             //string location = doc.DocumentNode.SelectSingleNode("//div[@class='location search_highlight']").InnerText.Trim();
