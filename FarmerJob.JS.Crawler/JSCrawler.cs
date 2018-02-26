@@ -3,6 +3,7 @@ using Abot.Poco;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace FarmerJob.JS.Crawler
             {
                 CrawlDecision decision = new CrawlDecision { Allow = true };
 
-                if (!pageToCrawl.Uri.AbsoluteUri.Contains("/jobs/job-of") && !pageToCrawl.Uri.AbsoluteUri.Contains("jobs-of-computers-telecommunication-in-cebu"))
+                if (!pageToCrawl.Uri.AbsoluteUri.Contains("/en/job/") && !pageToCrawl.Uri.AbsoluteUri.Contains("/en/job-search/job-vacancy"))
                     return new CrawlDecision { Allow = false, Reason = string.Format("Dont want to crawl {0} pages", pageToCrawl.Uri.AbsoluteUri) };
 
                 return decision;
@@ -38,7 +39,7 @@ namespace FarmerJob.JS.Crawler
             {
                 CrawlDecision decision = new CrawlDecision { Allow = true };
 
-                if (!crawledPage.Uri.AbsoluteUri.Contains("/jobs/job-of") && !crawledPage.Uri.AbsoluteUri.Contains("jobs-of-computers-telecommunication-in-cebu"))
+                if (!crawledPage.Uri.AbsoluteUri.Contains("/en/job/") && !crawledPage.Uri.AbsoluteUri.Contains("/en/job-search/job-vacancy"))
                     return new CrawlDecision { Allow = false, Reason = "Dont want to crawl links in pages: " + crawledPage.Uri.AbsoluteUri };
 
                 return decision;
@@ -74,7 +75,7 @@ namespace FarmerJob.JS.Crawler
             log.Info("crawler_ProcessPageCrawlCompleted");
             log.Info(result);
 
-            if (!string.IsNullOrEmpty(crawledPage.Content.Text) && crawledPage.Uri.AbsoluteUri.Contains("/jobs/"))
+            if (!string.IsNullOrEmpty(crawledPage.Content.Text) && crawledPage.Uri.AbsoluteUri.Contains("/en/job/"))
             {
                 var doc = crawledPage.HtmlDocument; //Html Agility Pack parser
 
@@ -82,11 +83,11 @@ namespace FarmerJob.JS.Crawler
 
                 try
                 {
-                    string positionTitle = doc.DocumentNode.SelectSingleNode("//section[@class='box box_r']/ul/li/p").InnerText.Trim();
-                    string location = doc.DocumentNode.SelectNodes("//div[@class='cm-12 box_i bWord']/ul/li")[1].InnerText.Trim();
-                    string companyName = doc.DocumentNode.SelectSingleNode("//a[@id='urlverofertas']").InnerText.Trim();
-                    string postedDate = doc.DocumentNode.SelectSingleNode("//div[@class='cm-12 box_i bWord']/ul/p/span[@class='info_pub']/span").InnerText.Trim();
-                    string jobDescription = doc.DocumentNode.SelectNodes("//div[@class='cm-12 box_i bWord']/ul/li")[2].InnerHtml.Trim();
+                    string positionTitle = doc.DocumentNode.SelectSingleNode("//h1[@id='position_title']").InnerText.Trim();
+                    string location = doc.DocumentNode.SelectSingleNode("//span[@id='single_work_location']").InnerText.Trim();
+                    string companyName = doc.DocumentNode.SelectSingleNode("//div[@id='company_name']/a").InnerText.Trim();
+                    string postedDate = doc.DocumentNode.SelectSingleNode("//p[@id='posting_date']/span").InnerText.Trim();
+                    string jobDescription = doc.DocumentNode.SelectSingleNode("//div[@id='job_description']").InnerHtml.Trim();
 
                     //log.Info(string.Format("Position Title: {0}\nLocation: {1}\nCompany Name: {2}\nPosted Date: {3}\nJob Desc: {4}", positionTitle, location, companyName, postedDate, jobDescription));
                 }
